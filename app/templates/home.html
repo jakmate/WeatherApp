@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+
+<body>
+    <h1>Weather App</h1>
+    <div class="container">
+        <form method="POST" action="/weather">
+            <label for="inputText">Enter Location:</label>
+            <input type="text" id="inputText" name="inputText">
+            <button type="submit">Submit</button>
+            <div id="place">
+                {% if place %}
+                <p>Current location: {{ place }}</p>
+                {% endif %}
+            </div>
+        </form>
+        {% if place %}
+        <div class="tab">            
+            <button class="tablinks active" onclick="openTab(event, 'Hourly')">Hourly</button>
+            <button class="tablinks" onclick="openTab(event, 'Daily')">Daily</button>
+        </div>
+
+        <!-- Tab content -->
+        <div id="Daily" class="tabcontent">
+            <div class="forecast-container">
+                {% for day in daily_data %}
+                <div class="forecast-column">
+                    <p>{{ day['time'] }}</p>
+                    <img src="{{ url_for('static', filename=day['image']) }}" alt="Weather Image">
+                    <p>{{ day['temperature_2m_max'] }}°C</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div id="Hourly" class="tabcontent" style="display: block;">
+            <div class="forecast-container">
+                {% for hour in hourly_data %}
+                <div class="forecast-column">
+                    <p>{{ hour['time'].split('T')[0] }}</p>
+                    <p>{{ hour['time'].split('T')[1] }}</p>
+                    <img src="{{ url_for('static', filename=hour['image']) }}" alt="Weather Image">
+                    <p>{{ hour['temperature_2m'] }}°C</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+    <script>
+        function openTab(evt, tabName) {
+            // Declare all variables
+            var i, tabcontent, tablinks;
+
+            // Get all elements with class="tabcontent" and hide them
+            tabcontent = document.getElementsByClassName("tabcontent");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+            }
+
+            // Get all elements with class="tablinks" and remove the class "active"
+            tablinks = document.getElementsByClassName("tablinks");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace(" active", "");
+            }
+
+            // Show the current tab, and add an "active" class to the button that opened the tab
+            document.getElementById(tabName).style.display = "block";
+            evt.currentTarget.className += " active";
+        }
+    </script>
+</body>
+
+</html>
