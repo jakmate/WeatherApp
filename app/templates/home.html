@@ -11,7 +11,7 @@
 <body>
     <h1>Weather App</h1>
     <div class="container">
-        <form method="POST" action="/weather">
+        <form method="POST" action="/">
             <label for="inputText">Enter Location:</label>
             <input type="text" id="inputText" name="inputText">
             <button type="submit">Submit</button>
@@ -32,9 +32,9 @@
             <div class="forecast-container">
                 {% for day in daily_data %}
                 <div class="forecast-column">
-                    <p>{{ day['time'] }}</p>
+                    <p>{{ day['date'].strftime('%d-%m-%Y') }}</p>
                     <img src="{{ url_for('static', filename=day['image']) }}" alt="Weather Image">
-                    <p>{{ day['temperature_2m_max'] }}°C</p>
+                    <p>{{ "%.1f"|format(day['temperature_2m_max']) }}°C</p>
                 </div>
                 {% endfor %}
             </div>
@@ -44,10 +44,9 @@
             <div class="forecast-container">
                 {% for hour in hourly_data %}
                 <div class="forecast-column">
-                    <p>{{ hour['time'].split('T')[0] }}</p>
-                    <p>{{ hour['time'].split('T')[1] }}</p>
+                    <p>{{ hour['date'].strftime('%d-%m-%Y %H:%M') }}</p>
                     <img src="{{ url_for('static', filename=hour['image']) }}" alt="Weather Image">
-                    <p>{{ hour['temperature_2m'] }}°C</p>
+                    <p>{{ "%.1f"|format(hour['temperature_2m']) }}°C</p>
                 </div>
                 {% endfor %}
             </div>

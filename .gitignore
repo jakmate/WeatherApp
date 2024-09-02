@@ -1,2 +1,5 @@
 openmeteopy
 __pycache__/
+venv/
+requirements.txt
+.cache.sqlite
