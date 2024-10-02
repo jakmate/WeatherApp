@@ -87,8 +87,6 @@ def get_results(coords):
             ),
             "weather_code": daily.Variables(0).ValuesAsNumpy(),
             "temperature_2m_max": daily.Variables(1).ValuesAsNumpy(),
-            "sunrise": daily.Variables(2).ValuesAsNumpy(),
-            "sunset": daily.Variables(3).ValuesAsNumpy(),
             "precipitation_probability_max": daily.Variables(4).ValuesAsNumpy()
         }
         daily_dataframe = pd.DataFrame(daily_data)

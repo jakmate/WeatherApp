@@ -32,68 +32,117 @@ form {
     margin-bottom: 20px;
 }
 
-label,
-input,
-button {
+label, input, button {
     margin: 5px;
 }
 
-.forecast-container {
+/* Tab container */
+.tab-container {
+    width: 100%;
+}
+
+.tab {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    border-bottom: 1px solid #ccc;
+}
+
+.tab button {
+    flex: 1 1 auto;
+    padding: 10px;
+    background-color: inherit;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    text-align: center;
+    transition: 0.3s;
+    width: 100%;
+    max-width: 150px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.tab button:hover {
+    background-color: #ddd;
+}
+
+.tab button.active {
+    background-color: #ccc;
+}
+
+.tab-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.tab-header img {
+    width: 50px;
+    height: 50px;
+}
+
+.tab-summary p {
+    margin-top: 5px;
+    font-size: 14px;
+    color: #333;
+}
+
+/* Day content */
+.day-content {
+    display: none;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+    margin-top: 20px;
+}
+
+.day-content h2 {
+    text-align: center;
+    color: #333;
+}
+
+/* Hourly forecast */
+.hourly-forecast {
     display: flex;
     justify-content: space-around;
     flex-wrap: nowrap;
     overflow-x: auto;
+    margin-top: 10px;
 }
 
-.forecast-column {
-    background-color: #f9f9f9;
+.hourly-column {
+    background-color: #fff;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     padding: 20px;
     margin: 10px;
     text-align: center;
     border-radius: 5px;
     flex: 0 0 auto;
-    /* Prevent shrinking */
-    width: 150px;
+    width: 100px;
 }
 
-.forecast-column img {
-    width: 50px;
-    height: 50px;
+.hourly-column img {
+    width: 30px;
+    height: 30px;
 }
 
-/* Style the tab */
-.tab {
-    overflow: hidden;
-    border: 1px solid #ccc;
-    background-color: #f1f1f1;
+.precipitation-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 5px;
 }
 
-/* Style the buttons that are used to open the tab content */
-.tab button {
-    background-color: inherit;
-    float: left;
-    border: none;
-    outline: none;
-    cursor: pointer;
-    padding: 14px 16px;
-    transition: 0.3s;
+.precipitation-container p {
+    margin: 0;
+    font-size: 14px;
+    color: #666;
 }
 
-/* Change background color of buttons on hover */
-.tab button:hover {
-    background-color: #ddd;
-}
-
-/* Create an active/current tablink class */
-.tab button.active {
-    background-color: #ccc;
-}
-
-/* Style the tab content */
-.tabcontent {
-    display: none;
-    padding: 6px 12px;
-    border: 1px solid #ccc;
-    border-top: none;
+.precipitation-container img {
+    width: 32px; /* Adjust the size to match the text */
+    height: 32px;
+    margin-left: 5px; /* Adds space between the text and the image */
 }

@@ -77,24 +77,26 @@ def home():
                     daily_data = daily_data_df.reset_index().to_dict(orient='records')
                     for day in daily_data:
                         weather_code = day.get('weather_code')
+                        precipitation_probability_max = day['precipitation_probability_max']
                         day['image'] = weather_image_map.get(weather_code, "default.png")
 
                 if isinstance(hourly_data_df, pd.DataFrame):
                     hourly_data = hourly_data_df.reset_index().to_dict(orient='records')
                     current_datetime = datetime.now(pytz.UTC)
-                    next_24_hours = current_datetime + timedelta(hours=24)
+                    next_7_days = current_datetime + timedelta(days=7)
 
                     hourly_data = [
                         hour for hour in hourly_data
-                        if current_datetime <= hour['date'] < next_24_hours
+                        if current_datetime <= hour['date'] < next_7_days
                     ]
 
                     for hour in hourly_data:
                         weather_code = hour.get('weather_code')
                         hour_datetime = hour['date']
+                        precipitation_probability = hour['precipitation_probability']
                         hour_of_day = hour_datetime.hour
 
-                        image_map = weather_image_map_night if 22 <= hour_of_day or hour_of_day <= 6 else weather_image_map
+                        image_map = weather_image_map_night if 6 <= hour_of_day or hour_of_day <= 21 else weather_image_map
                         hour['image'] = image_map.get(weather_code, "default.png")
 
     return render_template("home.html", title="Home", place=place, daily_data=daily_data, hourly_data=hourly_data, date=datetime.now(pytz.UTC).date())

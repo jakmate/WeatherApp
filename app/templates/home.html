@@ -21,60 +21,72 @@
                 {% endif %}
             </div>
         </form>
+
         {% if place %}
-        <div class="tab">            
-            <button class="tablinks active" onclick="openTab(event, 'Hourly')">Hourly</button>
-            <button class="tablinks" onclick="openTab(event, 'Daily')">Daily</button>
-        </div>
-
-        <!-- Tab content -->
-        <div id="Daily" class="tabcontent">
-            <div class="forecast-container">
+        <div class="tab-container">
+            <div class="tab">
                 {% for day in daily_data %}
-                <div class="forecast-column">
-                    <p>{{ day['date'].strftime('%d-%m-%Y') }}</p>
-                    <img src="{{ url_for('static', filename=day['image']) }}" alt="Weather Image">
-                    <p>{{ "%.1f"|format(day['temperature_2m_max']) }}°C</p>
-                </div>
+                <button class="tablinks" onclick="openDay(event, 'day-{{ loop.index }}')">
+                    <div class="tab-header">
+                        <p>{{ day['date'].strftime('%A') }}</p>
+                        <img src="{{ url_for('static', filename=day['image']) }}" alt="Weather Image">
+                    </div>
+                    <div class="tab-summary">
+                        <p>{{ "%.1f"|format(day['temperature_2m_max']) }}°C</p>
+                    </div>
+                </button>
                 {% endfor %}
             </div>
-        </div>
 
-        <div id="Hourly" class="tabcontent" style="display: block;">
-            <div class="forecast-container">
-                {% for hour in hourly_data %}
-                <div class="forecast-column">
-                    <p>{{ hour['date'].strftime('%d-%m-%Y %H:%M') }}</p>
-                    <img src="{{ url_for('static', filename=hour['image']) }}" alt="Weather Image">
-                    <p>{{ "%.1f"|format(hour['temperature_2m']) }}°C</p>
+            {% for day in daily_data %}
+            <div id="day-{{ loop.index }}" class="day-content">
+                <h2>{{ day['date'].strftime('%A, %d-%m-%Y') }}</h2>
+                <div class="hourly-forecast">
+                    {% for hour in hourly_data %}
+                    {% if hour['date'].strftime('%Y-%m-%d') == day['date'].strftime('%Y-%m-%d') %}
+                    <div class="hourly-column">
+                        <p>{{ hour['date'].strftime('%H:%M') }}</p>
+                        <img src="{{ url_for('static', filename=hour['image']) }}" alt="Weather Image">
+                        <p>{{ "%.1f"|format(hour['temperature_2m']) }}°C</p>
+                        <div class="precipitation-container">
+                            <p>{{ hour['precipitation_probability']|int }}%</p>
+                            <img src="{{ url_for('static', filename='images/rain.png') }}" alt="Rain Image">
+                        </div>
+                    </div>
+                    {% endif %}
+                    {% endfor %}
                 </div>
-                {% endfor %}
             </div>
+            {% endfor %}
         </div>
         {% endif %}
     </div>
 
     <script>
-        function openTab(evt, tabName) {
-            // Declare all variables
-            var i, tabcontent, tablinks;
-
-            // Get all elements with class="tabcontent" and hide them
-            tabcontent = document.getElementsByClassName("tabcontent");
-            for (i = 0; i < tabcontent.length; i++) {
-                tabcontent[i].style.display = "none";
+        function openDay(evt, dayId) {
+            var i, dayContent, tablinks;
+            
+            // Hide all day contents
+            dayContent = document.getElementsByClassName("day-content");
+            for (i = 0; i < dayContent.length; i++) {
+                dayContent[i].style.display = "none";
             }
 
-            // Get all elements with class="tablinks" and remove the class "active"
+            // Remove active class from all tabs
             tablinks = document.getElementsByClassName("tablinks");
             for (i = 0; i < tablinks.length; i++) {
-                tablinks[i].className = tablinks[i].className.replace(" active", "");
+                tablinks[i].classList.remove("active");
             }
 
-            // Show the current tab, and add an "active" class to the button that opened the tab
-            document.getElementById(tabName).style.display = "block";
-            evt.currentTarget.className += " active";
+            // Show the current day content and add active class to the clicked tab
+            document.getElementById(dayId).style.display = "block";
+            evt.currentTarget.classList.add("active");
         }
+
+        // Set default active tab and content
+        document.addEventListener("DOMContentLoaded", function() {
+            document.querySelector(".tablinks").click();
+        });
     </script>
 </body>
 
