@@ -28,7 +28,7 @@
                 {% for day in daily_data %}
                 <button class="tablinks" onclick="openDay(event, 'day-{{ loop.index }}')">
                     <div class="tab-header">
-                        <p>{{ day['date'].strftime('%A') }}</p>
+                        <p>{{ day['date'].strftime('%d-%m-%Y') }}</p>
                         <img src="{{ url_for('static', filename=day['image']) }}" alt="Weather Image">
                     </div>
                     <div class="tab-summary">

@@ -55,7 +55,7 @@ def get_results(coords):
         "latitude": lat,
         "longitude": lon,
         "hourly": ["temperature_2m", "precipitation_probability", "weather_code"],
-        "daily": ["weather_code", "temperature_2m_max", "sunrise", "sunset", "precipitation_probability_max"]
+        "daily": ["weather_code", "temperature_2m_max", "precipitation_probability_max"]
     }
     
     try:
@@ -87,7 +87,7 @@ def get_results(coords):
             ),
             "weather_code": daily.Variables(0).ValuesAsNumpy(),
             "temperature_2m_max": daily.Variables(1).ValuesAsNumpy(),
-            "precipitation_probability_max": daily.Variables(4).ValuesAsNumpy()
+            "precipitation_probability_max": daily.Variables(2).ValuesAsNumpy()
         }
         daily_dataframe = pd.DataFrame(daily_data)
         
