@@ -2,6 +2,7 @@ import requests
 import openmeteo_requests
 import requests_cache
 import pandas as pd
+import os
 from retry_requests import retry
 
 def get_coordinates(name):
@@ -45,8 +46,12 @@ def get_results(coords):
         tuple: DataFrames containing hourly and daily weather data.
     """
     # Setup request caching and retry
-    cache_session = requests_cache.CachedSession(expire_after=3600)
-    retry_session = retry(cache_session, retries=5, backoff_factor=0.2)
+    if not os.getenv("VERCEL"):
+        cache_session = requests_cache.CachedSession('.cache', expire_after=3600)
+        retry_session = retry(cache_session, retries=5, backoff_factor=0.2)
+    else:
+        retry_session = retry(requests.Session(), retries=5, backoff_factor=0.2)
+
     openmeteo = openmeteo_requests.Client(session=retry_session)
     
     lat, lon = coords
